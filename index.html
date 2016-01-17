@@ -1,0 +1,46 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Memory Difference Analyzer</title>
+  <meta name="description" content="A tool to analyze memory dumps to pinpoint desired memory locations.">
+  <meta name="author" content="Austin Salgat">
+
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <h1>Memory Difference Analzyer</h1>
+  
+  <h2>Instructions</h2>
+  <p>Select the text files in the order to be compared, then select using the droplist input how to compare the files. NOTE: Null ascii values are treated internally as memory locations that were removed.</p>
+  
+  <h2>Add files</h2>
+  <input id="memory-file" type="file" />
+  <button id="clear-data" type="button">Clear Loaded Data</button>
+  
+  <h2>Comparison Method</h2>
+  <p>Select comparison method for each stage.<p>
+  <select id="difference-select">
+    <option value="blank"></option>
+    <option value="keep-differences">Keep Differences</option>
+    <option value="keep-changes">Keep Changes</option>
+  </select>
+  <button id="reset-comparison" type="button">Reset comparison methods</button>
+  <br>
+  <ol id="comparison-list">
+  </ol>
+  
+  <h2>Process Differences</h2>
+  <button id="process-diff" type="button">Process</button>
+  
+  <h3>Results<h3>
+  <ul id="results">
+  </ul>
+    
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>  
+  <script src="js/scripts.js"></script>
+</body>
+</html>
