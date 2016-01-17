@@ -91,7 +91,7 @@ $("document").ready(function(){
             displayError("Error: Memory width must be at least 1 character.");
             errorCount++;
         } else {
-            memoryWidth = $("#memory-width").val();
+            memoryWidth = Number($("#memory-width").val());
         }
         
         if (memoryFiles.length < 2) {
@@ -123,13 +123,14 @@ $("document").ready(function(){
         for (var index = 1; index < memoryFiles.length; ++index) {
             var comparisonType = comparisonSteps[index-1];
             if (comparisonType == OptionsEnum.KEEP_DIFFERENCES) {
-                resultFile = keepDifferences(resultFile, memoryFiles[index], memoryWidth); 
+                resultFile = keepDifferences(resultFile, memoryFiles[index].data, memoryWidth); 
             } else if (comparisonType == OptionsEnum.REMOVE_DIFFERENCES) {
-                resultFile = removeDifferences(resultFile, memoryFiles[index], memoryWidth);
+                resultFile = removeDifferences(resultFile, memoryFiles[index].data, memoryWidth);
             }
         }
         
         // Finally, display non-null values with their offsets
+        console.log(resultFile);
     });
     
     /**
@@ -137,6 +138,14 @@ $("document").ready(function(){
      */
     function keepDifferences(originalFile, nextFile, memoryWidth) {
         var resultFile = originalFile;
+        
+        for (var index = 0; index < originalFile.length; index+=memoryWidth) {
+            var originalMemoryValue = getCharacters(originalFile, index, memoryWidth);
+            var nextMemoryValue = getCharacters(nextFile, index, memoryWidth);
+            if (originalMemoryValue == nextMemoryValue) {
+                resultFile = setMemoryToNull(resultFile, index, memoryWidth);
+            }
+        }
         
         return resultFile;
     }
@@ -148,6 +157,32 @@ $("document").ready(function(){
         var resultFile = originalFile;
         
         return resultFile;
+    }
+    
+    /**
+     * Returns a string of characters of the provided with at the provided offset.
+     */
+    function getCharacters(fileString, offset, width) {
+        if (offset+width-1 >= fileString.length) {
+            throw "Accessing characters out of bounds.";
+        }
+        
+        var result = "";
+        for (var index = offset; index < offset+width; ++index) {
+            result += fileString.charAt(index);
+        }
+        
+        return result;
+    }
+    
+    /**
+     * Returns the given file with the specified memory location set to null.
+     */
+    function setMemoryToNull(fileString, offset, memoryWidth) {
+        for (var index = offset; index < offset+memoryWidth; ++index) {
+            fileString = fileString.substr(0, index) + "\u2205" + fileString.substr(index+1);
+        }
+        return fileString;
     }
     
     /**
