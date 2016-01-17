@@ -84,6 +84,7 @@ $("document").ready(function(){
      */
     $("#process-diff").click(function() {
         $("#results-errors li").remove();
+        $("#results li").remove();
         
         var errorCount = 0;
         
@@ -131,8 +132,30 @@ $("document").ready(function(){
         }
         
         // Finally, display non-null values with their offsets
-        console.log(resultFile);
+        var memorySize = 1;
+        if (Number($("#memory-size").val()) > 1) {
+            memorySize = Number($("#memory-size").val());
+        }
+        var memoryOffset = 0;
+        if (Number($("#memory-offset").val()) > 1) {
+            memoryOffset = Number($("#memory-offset").val());
+        }
+        
+        displayResults(resultFile, memoryWidth, memorySize, memoryOffset);
     });
+    
+    /**
+     * Displays a list of all addresses and their final values.
+     */
+    function displayResults(resultFile, memoryWidth, memorySize, memoryOffset) {
+        for (var index = 0; index < resultFile.length; index+=memoryWidth) {
+            var memoryValue = getCharacters(resultFile, index, memoryWidth);
+            if (memoryValue.charAt(0) != "\u2205") {
+                var memoryLocation = (index/memoryWidth)*memorySize + memoryOffset;
+                $("#results").append("<li>" + "<span class='memory-location'>" + memoryLocation.toString(16) +"</span>: " + "<span class='memory-value'>" + memoryValue + "</span>" + "</li>");
+            }
+        }
+    }
     
     /**
      * Sets any memory values that haven't changed to null and returns the resulting file.
