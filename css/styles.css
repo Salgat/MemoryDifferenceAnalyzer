@@ -1,7 +1,89 @@
+/* Color scheme: http://www.colourlovers.com/palette/77121/Good_Friends */
+
+#main {
+    width: 60%;
+    background-color: #99B2B7;
+    border-radius: 25px;
+    margin: 25px auto;
+    padding: 25px;
+    min-width: 640px;
+}
+@media (max-width: 1110px) {
+  #main {
+      width: 95%;
+  }
+}
+@media (max-width: 705px) {
+  #main {
+      width: 100%;
+      margin: 0;
+      padding: 10px;
+  }
+}
+
+section {
+    background: #D5DED9;
+    padding: 25px;
+    margin: 25px 0;
+    border-radius: 25px;
+}
+
+h1, h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
 .results {
     font-size: 12pt;
 }
 
 .error {
     color: red;
+}
+
+/* http://www.abeautifulsite.net/whipping-file-inputs-into-shape-with-bootstrap-3/ */
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+.input-label {
+    width: 100%;
+}
+
+.input-control {
+    min-width: 100px;
+    float: right;
+}
+.btn {
+    margin-top: 5px;
+}
+
+#file-list, #comparison-list, #results {
+    background-color: white;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center;
+    margin-top: 25px;
+    list-style: none;
+    padding-left: 0px;
+}
+
+#file-list li:nth-child(even), #comparison-list li:nth-child(even), #results li:nth-child(even) {
+    background-color: #D9CEB2;
 }

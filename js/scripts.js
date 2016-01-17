@@ -152,7 +152,7 @@ $("document").ready(function(){
             var memoryValue = getCharacters(resultFile, index, memoryWidth);
             if (memoryValue.charAt(0) != "\u2205") {
                 var memoryLocation = (index/memoryWidth)*memorySize + memoryOffset;
-                $("#results").append("<li>" + "<span class='memory-location'>" + memoryLocation.toString(16) +"</span>: " + "<span class='memory-value'>" + memoryValue + "</span>" + "</li>");
+                $("#results").append("<li>" + "<span class='memory-location'>$" + memoryLocation.toString(16) +"</span>: " + "<span class='memory-value'>" + memoryValue + "</span>" + "</li>");
             }
         }
     }
