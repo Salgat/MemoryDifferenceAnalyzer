@@ -27,18 +27,20 @@
   <select id="difference-select">
     <option value="blank"></option>
     <option value="keep-differences">Keep Differences</option>
-    <option value="keep-changes">Keep Changes</option>
+    <option value="remove-differences">Remove Differences</option>
   </select>
   <button id="reset-comparison" type="button">Reset comparison methods</button>
   <br>
   <ol id="comparison-list"></ol>
   
   <h2>Process Differences</h2>
+  Memory Width (Characters):
+  <input id="memory-width" type="number" name="quantity" min="1">
   <button id="process-diff" type="button">Process</button>
   
   <h3>Results<h3>
   <p id="results-message"></p>
-  <p id="results-errors" class="results error"></p>
+  <ul id="results-errors" class="results error"></ul>
   <ul id="results"></ul>
     
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>  
