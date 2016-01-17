@@ -8,16 +8,26 @@ $("document").ready(function(){
      * Adds uploaded file to memoryFiles array.
      */
     $("#memory-file").change(function() {
-        alert('changed!');
         var reader = new FileReader();
         var file = $('#memory-file')[0].files[0];
         
         reader.onload = function(e) {
             memoryFiles.push({fileName: file.name, data: reader.result})
+            updateFileList();
         }
 
         reader.readAsText(file);
     });
+    
+    /**
+     * Updates displayed list of files to be compared.
+     */
+    function updateFileList() {
+        $("#file-list li").remove();
+        memoryFiles.forEach(function(entry) {
+            $("#file-list").append("<li>" + entry.fileName + "</li>");
+        });
+    }
     
     /**
      * Removes all loaded files.
@@ -66,5 +76,15 @@ $("document").ready(function(){
     $("#reset-comparison").click(function() {
         comparisonSteps = [];
         updateComparisonDisplay();
+    });
+    
+    /**
+     * Process file differences.
+     */
+    $("#process-diff").click(function() {
+        if (comparisonSteps.length != memoryFiles.length-1) {
+            $("#results-errors").text("Error: The number of comparison steps(" + comparisonSteps.length + ") should be equal to one less than the number of files("+ memoryFiles.length +").")
+            return;
+        }
     });
 });
