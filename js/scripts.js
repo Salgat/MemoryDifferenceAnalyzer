@@ -34,6 +34,7 @@ $("document").ready(function(){
      */
     $("#clear-data").click(function() {
        memoryFiles = []; 
+       updateFileList();
     });
     
     /**
@@ -63,7 +64,7 @@ $("document").ready(function(){
             if (entry == OptionsEnum.KEEP_DIFFERENCES) {
                 comparisonType = "Keep Differences";
             } else if (entry == OptionsEnum.REMOVE_DIFFERENCES) {
-                comparisonType = "Ignore Differences";
+                comparisonType = "Remove Differences";
             }
             
             $("#comparison-list").append("<li>"+ comparisonType +"</li>");
@@ -137,26 +138,48 @@ $("document").ready(function(){
      * Sets any memory values that haven't changed to null and returns the resulting file.
      */
     function keepDifferences(originalFile, nextFile, memoryWidth) {
-        var resultFile = originalFile;
-        
-        for (var index = 0; index < originalFile.length; index+=memoryWidth) {
-            var originalMemoryValue = getCharacters(originalFile, index, memoryWidth);
-            var nextMemoryValue = getCharacters(nextFile, index, memoryWidth);
-            if (originalMemoryValue == nextMemoryValue) {
-                resultFile = setMemoryToNull(resultFile, index, memoryWidth);
-            }
-        }
-        
-        return resultFile;
+        return keepOrRemoveDifferences(originalFile, nextFile, memoryWidth, true);
     }
     
     /**
      * Sets any memory values that have changed to null and returns the resulting file.
      */
     function removeDifferences(originalFile, nextFile, memoryWidth) {
+        return keepOrRemoveDifferences(originalFile, nextFile, memoryWidth, false);
+    }
+    
+    /**
+     * Internal function to either set differences or non-differences to null.
+     */
+    function keepOrRemoveDifferences(originalFile, nextFile, memoryWidth, keepDifferences) {
         var resultFile = originalFile;
         
+        for (var index = 0; index < originalFile.length; index+=memoryWidth) {
+            var originalMemoryValue = getCharacters(originalFile, index, memoryWidth);
+            var nextMemoryValue = getCharacters(nextFile, index, memoryWidth);
+            if (keepDifferences && originalMemoryValue == nextMemoryValue) {
+                resultFile = setMemoryToNull(resultFile, index, memoryWidth);
+            } else if (!keepDifferences && originalMemoryValue != nextMemoryValue) {
+                resultFile = setMemoryToNull(resultFile, index, memoryWidth);
+            }
+        }
+        
+        resultFile = removeNullValues(resultFile, nextFile);
+        
         return resultFile;
+    }
+    
+    /**
+     * Returns a string with the null values from the reference removed.
+     */
+    function removeNullValues(nullReference, result) {
+        for (var index = 0; index < nullReference.length; ++index) {
+            if (nullReference.charAt(index) == "\u2205") {
+                result = result.substr(0, index) + "\u2205" + result.substr(index+1);
+            }
+        }
+        
+        return result;
     }
     
     /**
